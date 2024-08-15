@@ -15,9 +15,11 @@ module.exports = async (req, res) => {
       { new: true } // This option returns the updated document
     );
 
-    const users = await Users.find({ appointmentId: { $exists: true } }).populate('appointmentId') ?? [];
-
-    res.render("examiner", { users });
+    const users = await Users.find({ appointment: { $exists: true } }).populate('appointment') ?? [];
+  
+    const message = req.session.message;
+    res.render("pages/examiner", { title: 'Examiner', message, users });
+  
   } catch (error) {
     //handle error
     console.log(error);

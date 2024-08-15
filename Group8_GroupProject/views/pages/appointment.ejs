@@ -29,6 +29,65 @@
   </form>
 </div>
 
+          <!-- Page content -->
+          <section class="py-5">
+            <div class="container px-5">
+              <h1 class="fw-bolder">User Status</h1>
+              <p class="lead fw-normal text-muted mb-0">
+                List of passed and failed users
+              </p>
+
+              <div class="row">
+                <!-- Table for Passed Users -->
+                <div class="col-md-6">
+                  <h2>Passed Users</h2>
+                  <table class="table">
+                    <thead class="bg-success text-white">
+                      <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Test Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% passedUsers?.forEach(user => { %>
+                      <tr data-user-id="<%= user._id %>">
+                        <td><%= user.firstName %></td>
+                        <td><%= user.lastName %></td>
+                        <td><%= user.TestType %></td>
+                      </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Table for Failed Users -->
+                <div class="col-md-6">
+                  <h2>Failed Users</h2>
+                  <table class="table">
+                    <thead class="bg-danger text-white">
+                      <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Test Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% failedUsers.forEach(user => { %>
+                      <tr data-user-id="<%= user._id %>">
+                        <td><%= user.firstName %></td>
+                        <td><%= user.lastName %></td>
+                        <td><%= user.TestType %></td>
+                      </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+          <br /><br />
+
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {

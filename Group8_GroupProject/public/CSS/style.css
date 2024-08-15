@@ -91,7 +91,7 @@ footer
     margin-bottom: 20px;
     font-weight: bold;
 }
-
+/* 
 .btn-primary 
 {
     background-color: #000;
@@ -103,7 +103,7 @@ footer
 {
     background-color: #000;
     border-color: #000;
-}
+} */
 
 .success 
 {
@@ -122,12 +122,12 @@ footer
 {
     display: flex;
 }
-
+/* 
 .btn-secondary
 {
     font-weight: bolder !important;
     margin-bottom: 10px;
-}
+} */
 .text-muted{
     color: #000 !important;
 }
@@ -137,10 +137,14 @@ footer
     grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
-.btn{
+/* .btn{
     width: 100%;
-}
+} */
 .card-body{
     border: #000 solid 2px !important;
     width: 100%;
+}
+
+.dflexbtn{
+    margin-top: 10%;
 }

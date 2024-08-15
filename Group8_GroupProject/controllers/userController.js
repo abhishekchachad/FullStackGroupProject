@@ -98,6 +98,7 @@ const saveUserData = (req, res) => {
     console.log('Request body:', req.body);
     const userId = res.locals.user._id;
     const { firstName, lastName, licenseNumber, age, carMake, carModel, carYear, plateNumber, appointmentId } = req.body;
+    const TestType = 'G2 Test';
 
     const updateData =
     {
@@ -108,7 +109,8 @@ const saveUserData = (req, res) => {
       'carDetails.make': carMake,
       'carDetails.model': carModel,
       'carDetails.year': carYear,
-      'carDetails.plateNumber': plateNumber
+      'carDetails.plateNumber': plateNumber,
+      TestType : TestType
     };
 
     if (appointmentId) {
@@ -132,12 +134,67 @@ const saveUserData = (req, res) => {
   }
 };
 
-const appointmentPage = (req, res) => {
+const saveGtestUserData = (req, res) => {
+  if (res.locals.isAuthenticated && res.locals.user.userType === 'Driver') {
+    console.log('Request body:', req.body);
+    const userId = res.locals.user._id;
+    const { firstName, lastName, licenseNumber, age, carMake, carModel, carYear, plateNumber, appointmentId } = req.body;
+    const TestType = 'G Test';
+
+    const updateData =
+    {
+      firstName,
+      lastName,
+      licenseNumber,
+      age,
+      'carDetails.make': carMake,
+      'carDetails.model': carModel,
+      'carDetails.year': carYear,
+      'carDetails.plateNumber': plateNumber,
+      TestType : TestType
+    };
+
+    if (appointmentId) {
+      updateData.appointment = appointmentId;
+    }
+
+    User.findByIdAndUpdate(userId, updateData, { new: true })
+      .then(updatedUser => {
+        if (!updatedUser) return res.status(404).send('User not found');
+        console.log('Updated user data:', updatedUser);
+        req.session.message = 'User data updated successfully';
+        res.redirect('/g');
+      })
+      .catch(err => {
+        console.log('Error updating user data:', err);
+        res.status(500).send('Error updating user data');
+      });
+  }
+  else {
+    res.redirect('/login');
+  }
+};
+
+const appointmentPage = async (req, res) => {
 
   if (res.locals.isAuthenticated && res.locals.user.userType === 'Admin') {
     const message = req.session.message;
-
-    res.render('pages/appointment', { title: 'Appointment', message });
+    const passedUsers = await User.find({ isPassed: true });
+    const failedUsers = await User.find({ isPassed: false });
+    let date = "";
+    
+    if (typeof data != "undefined") {
+      date = data.date;
+    }
+  
+    res.render("pages/appointment", {
+      title: 'Appointment',
+      date: date,
+      passedUsers,
+      failedUsers,
+      bookedTimes: [],
+      message,
+    });
   }
   else {
     res.redirect('/login');
@@ -256,17 +313,17 @@ const getBookedTimesForDate = (req, res) => {
     });
 };
 
-const examinerPage = (req, res) => {
+// const examinerPage = (req, res) => {
 
-  if (res.locals.isAuthenticated && res.locals.user.userType === 'Examiner') {
-    const message = req.session.message;
+//   if (res.locals.isAuthenticated && res.locals.user.userType === 'Examiner') {
+//     const message = req.session.message;
 
-    res.render('pages/examiner', { title: 'Examiner', message });
-  }
-  else {
-    res.redirect('/login');
-  }
-};
+//     res.render('pages/examiner', { title: 'Examiner', message });
+//   }
+//   else {
+//     res.redirect('/login');
+//   }
+// };
 
 module.exports =
 {
@@ -274,9 +331,10 @@ module.exports =
   g2Page,
   gPage,
   saveUserData,
+  saveGtestUserData,
   appointmentPage,
   addAppointment,
   bookAppointment,
-  getBookedTimesForDate,
-  examinerPage
+  getBookedTimesForDate//,
+ // examinerPage
 };

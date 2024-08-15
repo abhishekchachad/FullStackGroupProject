@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
 {
@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema(
   },
   Comments: {
     type: String,
+    default: ""
   },
   isPassed: {
     type: Boolean,
