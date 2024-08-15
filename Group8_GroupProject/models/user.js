@@ -18,6 +18,20 @@ const userSchema = new mongoose.Schema(
     year: { type: Number, default: 0 },
     plateNumber: { type: String, default: "" }
   },
+  appointmentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Appointment",
+  },
+  TestType: {
+    type: String,
+    default: "Default", // Default value if not supplied
+  },
+  Comments: {
+    type: String,
+  },
+  isPassed: {
+    type: Boolean,
+  },
   
   appointment: { type: mongoose.Schema.Types.ObjectId, ref: "Appointment" },
 });
